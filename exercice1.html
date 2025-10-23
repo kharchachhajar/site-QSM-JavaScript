@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Liste des questions en JavaScript</title>
+  <script src="exercice1.js"></script>
+  <link rel="stylesheet" href="exercice1.css">
+</head>
+<body>
+    <h1> QSM en JavaScript</h1>
+    <form id="qsmform">
+        <fieldset>
+            <legend> 1. Quel est la langage est utilise pour le style de la page web ? </legend>
+            <label> <input type="radio" name="Q1" value="a">HTML </label><br>
+            <label> <input type="radio" name="Q1" value="b">CSS </label><br>
+            <label> <input type="radio" name="Q1" value="c">PHP </label><br>
+            <label> <input type="radio" name="Q1" value="d">JavaScript </label><br>
+            <label> <input type="radio" name="Q1" value="e">SQL </label><br>
+        </fieldset>
+
+         <fieldset>
+            <legend> 2. Quelle extension est utilisée pour les fichiers JavaScript ? </legend>
+            <label> <input type="radio" name="Q2" value="a">.html </label><br>
+            <label> <input type="radio" name="Q2" value="b">.css </label><br>
+            <label> <input type="radio" name="Q2" value="c">.php </label><br>
+            <label> <input type="radio" name="Q2" value="d">.js </label><br>
+            <label> <input type="radio" name="Q2" value="e">.jpg </label><br>
+        </fieldset>
+
+         <fieldset>
+            <legend> 3.Quelles sont les villes au Maroc  </legend>
+            <label> <input type="checkbox" name="Q3" value="a">Paris </label><br>
+            <label> <input type="checkbox" name="Q3" value="b">Fes</label><br>
+            <label> <input type="checkbox" name="Q3" value="c">Casa </label><br>
+            <label> <input type="checkbox" name="Q3" value="d">Rabat </label><br>
+            <label> <input type="checkbox" name="Q3" value="e">Milano </label><br>
+        </fieldset>
+
+         <fieldset>
+            <legend> 4. Les langages interprétés sont :  </legend>
+            <label> <input type="checkbox" name="Q4" value="a"> JavaScript </label><br>
+            <label> <input type="checkbox" name="Q4" value="b">C++ </label><br>
+            <label> <input type="checkbox" name="Q4" value="c"> Python </label><br>
+            <label> <input type="checkbox" name="Q4" value="d"> Java </label><br>
+            <label> <input type="checkbox" name="Q4" value="e"> PHP </label><br>
+        </fieldset>
+
+         <fieldset>
+            <legend> 5. Les langages de programmation côté client : </legend>
+            <label> <input type="checkbox" name="Q5" value="a">HTML </label><br>
+            <label> <input type="checkbox" name="Q5" value="b">CSS </label><br>
+            <label> <input type="checkbox" name="Q5" value="c">PHP </label><br>
+            <label> <input type="checkbox" name="Q5" value="d">JavaScript </label><br>
+            <label> <input type="checkbox" name="Q5" value="e">SQL </label><br>
+        </fieldset>
+
+        <div class="button">
+             <button type="reset">Reinitialiser</button>
+             <button type="button" onclick="afficherCorrige()">Afficher le corrige</button>
+             <button type="button" onclick="testerQsm()">Afficher le resultat</button>
+        </div>
+    </form>
+</body>
+</html>
+ 
