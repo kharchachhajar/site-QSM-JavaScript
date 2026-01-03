@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Exercice 3 : Fonction trier()</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-hover: #1e40af;
+            --success-color: #10b981;
+            --error-color: #ef4444;
+            --bg-color: #f8fafc;
+            --surface-color: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --transition: all 0.2s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* ===== TYPOGRAPHIE ET BASE ===== */
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.5;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 48rem;
+            margin: 0 auto;
+            background: var(--surface-color);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+        }
+
+        /* ===== EN-TÊTE ===== */
+        .header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        h1 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        h1 code {
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-sm);
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .description {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 0.875rem;
+            color: #94a3b8;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .subtitle i {
+            color: var(--primary-color);
+        }
+
+        /* ===== ZONE DE SAISIE ===== */
+        .input-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 6rem;
+            padding: 1rem;
+            font-family: 'Consolas', monospace;
+            font-size: 0.875rem;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            background: #f8fafc;
+            color: var(--text-primary);
+            resize: vertical;
+            transition: var(--transition);
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            background: white;
+        }
+
+        /* ===== CONTROLES ===== */
+        .controls {
+            background: #f1f5f9;
+            padding: 1.5rem;
+            border-radius: var(--radius-md);
+            margin-bottom: 2rem;
+        }
+
+        .control-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .control-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .control-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .control-title i {
+            color: var(--primary-color);
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .option:hover {
+            border-color: var(--primary-color);
+            background: #f0f9ff;
+        }
+
+        .option input[type="radio"],
+        .option input[type="checkbox"] {
+            width: 1rem;
+            height: 1rem;
+            cursor: pointer;
+        }
+
+        .option label {
+            margin: 0;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .btn-run {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.875rem 2rem;
+            background: linear-gradient(135deg, var(--primary-color), #3b82f6);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-run:hover {
+            background: linear-gradient(135deg, var(--primary-hover), #2563eb);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-run:active {
+            transform: translateY(0);
+        }
+
+        /* ===== RÉSULTATS ===== */
+        .result-section {
+            background: #f8fafc;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .result-header {
+            background: #e2e8f0;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .result-header h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .result-content {
+            padding: 1.5rem;
+            min-height: 8rem;
+        }
+
+        .status {
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.875rem;
+            font-weight: 500;
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status.success {
+            display: flex;
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+
+        .status.error {
+            display: flex;
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        #output {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: var(--radius-md);
+            font-family: 'Consolas', monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            margin: 0;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .btn-run {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 1rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .result-content {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<body>
+    <div class="container">
+        <header class="header">
+
+            <h1> <i class="fas fa-sort-amount-up"></i> Fonction <code> trier () </code> </h1>
+            <p class="description"> Implementation de la fonction trier() qui prend une liste de nombres et retourne une
+                liste triee .</p>
+            <div class="subtitle"> <i class="fas fa-info-circle"></i> Entrez des valeurs separees par des virgules (ex:
+                3, 1, 4, 2) puis cliquez sur Executer </div>
+        </header>
+        <section class="input-section">
+            <div class="input-group">
+                <label for="inputArray">
+                    <i class="fas fa-list-ol"></i> Tableau d'entrée
+                </label>
+                <textarea id="inputArray"
+                    placeholder="entrez des nombres separes par virgules  , , ,"> 3, 1, 4, 2, 9, 5, 7</textarea>
+            </div>
+        </section>
+        <section class="controls">
+            <div class="control-group">
+                <div class="control-title"> <i class="fas fa-sort"></i> Ordre de tri </div>
+                <div class="option">
+                    <input type="radio" name="order" value="asc" id="asc" checked>
+                    <label for="asc">
+                        <i class="fas fa-sort-amount-up"></i> Croissant
+                    </label>
+                </div>
+
+                <div class="option">
+                    <input type="radio" name="order" value="desc" id="desc">
+                    <label for="desc">
+                        <i class="fas fa-sort-amount-down"></i> Decroissant
+                    </label>
+                </div>
+
+            </div>
+
+            <div class="control-group">
+                <div class="control-title"> <i class="fas fa-cog"></i> Options de traitement </div>
+                <div class="option">
+                    <input type="checkbox" id="inPlace">
+                    <label for="inPlace">
+                        <i class="fas fa-exchange-alt"></i> Trier en place
+                    </label>
+                </div>
+                <div class="option">
+                    <input type="checkbox" id="filterNonNumbers">
+                    <label for="filterNonNumbers">
+                        <i class="fas fa-filter"></i> Ignorer non-nombres
+                    </label>
+                </div>
+            </div>
+        </section>
+        <button class="btn-run" id="runBtn"><i class="fas fa-play-circle"></i> Executer </button>
+        <section class="result-section">
+            <div class="result-header">
+                <h3><i class="fas fa-chart-bar"></i> Resultat</h3>
+            </div>
+            <div class="result-content">
+                <div id="status" class="status"></div>
+                <pre id="output">// Le resultat apparaitra ici apres execution</pre>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        /**Prend un tableau et retourne un tableau trie selon les options **/
+        function trier(arr, options = {}) {
+            if (!Array.isArray(arr)) {
+                throw new TypeError("Le parametre doit être un tableau.");
+            }
+
+            const {
+                order = "asc",
+                inPlace = false,
+                filterNonNumbers = false
+            } = options;
+
+            const base = inPlace ? arr : [...arr];
+
+            const numbers = base.reduce((result, value) => {
+                const num = Number(value);
+                if (!Number.isNaN(num)) {
+                    result.push(num);
+                } else if (!filterNonNumbers) {
+                    throw new TypeError(`Valeur non numerique detectee : "${value}"`);
+                }
+                return result;
+            }, []);
+
+            numbers.sort((a, b) => a - b);
+            if (order === "desc") numbers.reverse();
+
+            if (inPlace) {
+                base.length = 0;
+                base.push(...numbers);
+                return base;
+            }
+
+            return numbers;
+        }
+
+        /** Parse l'entree utilisateur */
+        function parseInput(text) {
+            return text
+                .split(",")
+                .map(v => v.trim())
+                .filter(v => v !== "");
+        }
+
+        /** Formate le tableau pour l'affichage */
+        function formatArray(arr) {
+            if (arr.length === 0) return "[]";
+            return `[${arr.map(v => typeof v === 'number' ? v : `"${v}"`).join(", ")}]`;
+        }
+
+        /** Gestionnaire d'execution */
+        document.getElementById("runBtn").addEventListener("click", () => {
+            const input = document.getElementById("inputArray").value;
+            const order = document.querySelector('input[name="order"]:checked').value;
+            const inPlace = document.getElementById("inPlace").checked;
+            const filterNonNumbers = document.getElementById("filterNonNumbers").checked;
+
+            const options = { order, inPlace, filterNonNumbers };
+            const output = document.getElementById("output");
+            const status = document.getElementById("status");
+
+            // Réinitialiser
+            status.className = "status";
+            status.textContent = "";
+
+            try {
+                const arr = parseInput(input);
+                const result = trier(arr, options);
+
+                // Afficher le résultat
+                output.textContent = `// Entree analysee : ${formatArray(arr)}\n// Options : ordre=${order}, enPlace=${inPlace}, filtrer=${filterNonNumbers}\n\n// Résultat trie :\n${formatArray(result)}`;
+
+                // Afficher le statut
+                status.textContent = `✓ Tri effectue avec succes sur ${result.length} elements`;
+                status.className = "status success";
+            } catch (e) {
+                output.textContent = "// Erreur lors de l'execution";
+                status.textContent = `✗ ${e.message}`;
+                status.className = "status error";
+            }
+        });
+    </script>
+</body>
+
+</html>
