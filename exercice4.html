@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TP JavaScript - Exercice 4 : Somme de temps</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+
+        h1 {
+            color: #333;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+
+        .temps-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .input-group {
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        input[type="number"] {
+            width: 100px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        label {
+            font-weight: bold;
+            min-width: 100px;
+        }
+
+        .resultat {
+            margin: 30px 0;
+            padding: 20px;
+            border: 2px solid #4CAF50;
+            border-radius: 5px;
+            background-color: #e8f5e9;
+        }
+
+        .resultat h2 {
+            color: #2E7D32;
+            margin-top: 0;
+        }
+
+        .boutons {
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin-right: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        #calculerBtn {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        #effacerBtn {
+            background-color: #f44336;
+            color: white;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .unite {
+            font-weight: bold;
+            color: #555;
+        }
+
+        .temps-line {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="temps-section">
+        <h2>Entrer le premier temps :</h2>
+        <div class="input-group">
+            <label for="heures1">Heure(s) :</label>
+            <input type="number" id="heures1" min="0" value="2">
+            <span class="unite">Heure(s)</span>
+
+            <label for="minutes1">Minute(s) :</label>
+            <input type="number" id="minutes1" min="0" max="59" value="2333">
+            <span class="unite">Minute(s)</span>
+
+            <label for="secondes1">Seconde(s) :</label>
+            <input type="number" id="secondes1" min="0" max="59" value="2">
+            <span class="unite">Seconde(s)</span>
+        </div>
+    </div>
+
+    <div class="temps-section">
+        <h2>Entrer le deuxième temps :</h2>
+        <div class="input-group">
+            <label for="heures2">Heure(s) :</label>
+            <input type="number" id="heures2" min="0" value="1">
+            <span class="unite">Heure(s)</span>
+
+            <label for="minutes2">Minute(s) :</label>
+            <input type="number" id="minutes2" min="0" max="59" value="2">
+            <span class="unite">Minute(s)</span>
+
+            <label for="secondes2">Seconde(s) :</label>
+            <input type="number" id="secondes2" min="0" max="59" value="3">
+            <span class="unite">Seconde(s)</span>
+        </div>
+    </div>
+
+    <div class="temps-section">
+        <h2>Entrer le troisième temps :</h2>
+        <div class="input-group">
+            <label for="heures3">Heure(s) :</label>
+            <input type="number" id="heures3" min="0" value="13">
+            <span class="unite">Heure(s)</span>
+
+            <label for="minutes3">Minute(s) :</label>
+            <input type="number" id="minutes3" min="0" max="59" value="12">
+            <span class="unite">Minute(s)</span>
+
+            <label for="secondes3">Seconde(s) :</label>
+            <input type="number" id="secondes3" min="0" max="59" value="47">
+            <span class="unite">Seconde(s)</span>
+        </div>
+    </div>
+
+    <div class="boutons">
+        <button id="calculerBtn" onclick="calculerSomme()">Calculer la Somme</button>
+        <button id="effacerBtn" onclick="effacerDonnees()">Effacer</button>
+    </div>
+
+    <div class="resultat" id="resultat" style="display: none;">
+        <h2>Total des trois temps :</h2>
+        <div id="resultat-details">
+            <!-- Les resultats seront affiches ici -->
+        </div>
+    </div>
+
+    <script>
+        function calculerSomme() {
+            // Recuperer les valeurs des champs de saisie 
+            const temps1 = {
+                heures: parseInt(document.getElementById("heures1").value) || 0,
+                minutes: parseInt(document.getElementById("minutes1").value) || 0,
+                secondes: parseInt(document.getElementById("secondes1").value) || 0
+            };
+
+            const temps2 = {
+                heures: parseInt(document.getElementById("heures2").value) || 0,
+                minutes: parseInt(document.getElementById("minutes2").value) || 0,
+                secondes: parseInt(document.getElementById("secondes2").value) || 0
+            };
+
+            const temps3 = {
+                heures: parseInt(document.getElementById("heures3").value) || 0,
+                minutes: parseInt(document.getElementById("minutes3").value) || 0,
+                secondes: parseInt(document.getElementById("secondes3").value) || 0
+            };
+
+            // Calculer le total en secondes
+            let totalSecondes = 0;
+
+            // Fonction pour convertir un temps en secondes
+            function enSecondes(temps) {
+                return temps.heures * 3600 + temps.minutes * 60 + temps.secondes;
+            }
+
+            totalSecondes = enSecondes(temps1) + enSecondes(temps2) + enSecondes(temps3);
+
+            // Convertir en jours, heures, minutes, secondes
+            const jours = Math.floor(totalSecondes / (24 * 3600));
+            // reste de la division 
+            const resteApresJours = totalSecondes % (24 * 3600);
+
+            const heures = Math.floor(resteApresJours / 3600);
+            const resteApresHeures = resteApresJours % 3600;
+
+            const minutes = Math.floor(resteApresHeures / 60);
+            const secondes = resteApresHeures % 60;
+
+            // Afficher les temps individuels
+            let html = `
+                <h3>Temps individuels :</h3>
+                <div class="temps-line">
+                    <strong>Temps 1 :</strong> ${temps1.heures}h ${temps1.minutes}min ${temps1.secondes}s
+                </div>
+                <div class="temps-line">
+                    <strong>Temps 2 :</strong> ${temps2.heures}h ${temps2.minutes}min ${temps2.secondes}s
+                </div>
+                <div class="temps-line">
+                    <strong>Temps 3 :</strong> ${temps3.heures}h ${temps3.minutes}min ${temps3.secondes}s
+                </div>
+                
+                <h3>Résultat de la somme :</h3>
+                <div class="temps-line">
+                    <strong>Jour(s) :</strong> <span style="color: #4CAF50; font-size: 1.2em;">${jours}</span>
+                </div>
+                <div class="temps-line">
+                    <strong>Heure(s) :</strong> <span style="color: #4CAF50; font-size: 1.2em;">${heures}</span>
+                </div>
+                <div class="temps-line">
+                    <strong>Minute(s) :</strong> <span style="color: #4CAF50; font-size: 1.2em;">${minutes}</span>
+                </div>
+                <div class="temps-line">
+                    <strong>Seconde(s) :</strong> <span style="color: #4CAF50; font-size: 1.2em;">${secondes}</span>
+                </div>
+                
+                <h3>Total en secondes : ${totalSecondes} secondes</h3>
+            `;
+
+            document.getElementById("resultat-details").innerHTML = html;
+            document.getElementById("resultat").style.display = "block";
+        }
+
+        function effacerDonnees() {
+            // Réinitialiser tous les champs de saisie
+            const inputs = document.querySelectorAll('input[type="number"]');
+            inputs.forEach(input => {
+                input.value = "0";
+            });
+
+            // Reinitialiser les valeurs par defaut 
+            document.getElementById("heures1").value = "2";
+            document.getElementById("minutes1").value = "23";
+            document.getElementById("secondes1").value = "2";
+
+            document.getElementById("heures2").value = "1";
+            document.getElementById("minutes2").value = "2";
+            document.getElementById("secondes2").value = "3";
+
+            document.getElementById("heures3").value = "13";
+            document.getElementById("minutes3").value = "12";
+            document.getElementById("secondes3").value = "47";
+
+            // Cacher le resultat
+            document.getElementById("resultat").style.display = "none";
+        }
+
+    </script>
+</body>
+
+</html>

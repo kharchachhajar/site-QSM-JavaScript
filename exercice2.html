@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validation d'email</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,1);
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        h1 {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        label {
+            color: #555;
+        }
+        
+        input[type="email"] {
+            width: 100%;
+            padding: 20px 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 18px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        
+        .message {
+            padding: 12px;
+            border-radius: 6px;
+            text-align: center;
+            margin-top: 10px;
+        }
+        
+        .success {
+            background-color: #d4edda;
+            color: #890698;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .error {
+            background-color: #f8d7da;
+            color: #6318a0;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Validation d'email</h1>
+        <form id="form">
+            <label for="email">Entrez votre email :</label>
+            <input type="text" id="email" placeholder="exemple@gmail.com" required>
+            <button type="submit">Vérifier</button>
+            <p id="resultat" class="message"></p>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // recuperation la valeur saisie dans le champ email  
+            const email = document.getElementById('email').value.trim();
+            const resultat = document.getElementById('resultat');
+
+            // Reinitialiser l'affichage
+            resultat.textContent = '';
+            resultat.className = 'message';
+
+            // Verification 1: Email non vide
+            if (!email) {
+                resultat.textContent = '✖️ Email invalide : champ vide';
+                resultat.className = 'message error';
+                return;
+            }
+
+            // Verification 2: Presence de @
+            if (!email.includes('@')) {
+                resultat.textContent = '✖️ Email invalide : doit contenir @';
+                resultat.className = 'message error';
+                return;
+            }
+
+            // Verification 3: un seul @
+            // compter les @ et match(/@/g) pour trouver toutes les occurrences de @
+            const Count = (email.match(/@/g) || []).length;
+            if (Count > 1) {
+                resultat.textContent = '✖️ Email invalide : trop de @';
+                resultat.className = 'message error';
+                return;
+            }
+
+            const parts = email.split('@'); // diviser email en deux parties 
+            const local = parts[0] || ''; //partie avant @
+            const domain = parts[1] || ''; // partie apres @ 
+
+            // Verification 4: Partie avant @ non vide
+            if (!local) {
+                resultat.textContent = '✖️ Email invalide : partie avant @ manquante';
+                resultat.className = 'message error';
+                return;
+            }
+
+            // Verification 5: Commence par une lettre ou chiffre
+            // ^[a-zA-Z0-9] au debut de email commence par lettre minuscule ou majescule ou lettre 
+            if (!/^[a-zA-Z0-9]/.test(local)) {
+                resultat.textContent = '✖️ Email invalide : doit commencer par une lettre ou un chiffre';
+                resultat.className = 'message error';
+                return;
+            }
+
+            // Verification 6: Partie apres @ non vide
+            if (!domain) {
+                resultat.textContent = '✖️ Email invalide : partie après @ manquante';
+                resultat.className = 'message error';
+                return;
+            }
+
+            // Verification 7: Contient un point dans le domaine
+            if (!domain.includes('.')) {
+                resultat.textContent = '✖️ Email invalide : doit contenir un point après @';
+                resultat.className = 'message error';
+                return;
+            }
+
+            // Verification 8: Le point n'est pas au debut ou e la fin du domaine
+            if (domain.startsWith('.') || domain.endsWith('.')) {
+                resultat.textContent = '✖️ Email invalide : le domaine ne peut pas commencer ou finir par un point';
+                resultat.className = 'message error';
+                return;
+            }
+
+            // Verification 9: Caractères valides 
+            //commence par lettres ou chiffres ou points ou underscores ou % ou + ou -
+            // + cad au moins un caractere
+            // {2,} cad au moins 2 lettres et $ fin de email
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!emailRegex.test(email)) {
+                resultat.textContent = '✖️ Email invalide : format incorrect';
+                resultat.className = 'message error';
+                return;
+            }
+
+            // Si toutes les verifications passent
+            resultat.textContent = '✔️ Email valide !';
+            resultat.className = 'message success';
+        });
+    </script>
+</body>
+</html>
